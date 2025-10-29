@@ -4,12 +4,15 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 @Entity
 @Table(name = "bookings")
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @JdbcTypeCode(SqlTypes.CHAR) // <-- Фікс
     private UUID bookingId;
 
     @ManyToOne
@@ -30,10 +33,9 @@ public class Booking {
 
     private LocalDate bookingDate;
     private LocalTime bookingTime;
-    private String status; // Pending, Confirmed, Completed, Cancelled
+    private String status;
     private double totalPrice;
 
-    // Композиція: Оплата не існує без бронювання
     @OneToOne(mappedBy = "booking", cascade = CascadeType.ALL, orphanRemoval = true)
     private Payment payment;
 

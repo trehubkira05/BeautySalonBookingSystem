@@ -3,23 +3,27 @@ package com.beautysalon.booking.entity;
 import jakarta.persistence.*;
 import java.util.List;
 import java.util.UUID;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 @Entity
 @Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @JdbcTypeCode(SqlTypes.CHAR) // <-- Фікс: Вказуємо, що UUID відображається на CHAR
     private UUID userId;
 
     private String name;
     private String email;
     private String password;
     private String phone;
-    private String role; // Role: CLIENT, MASTER, ADMIN
+    private String role; 
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     private List<Booking> bookings;
 
+    // Конструктори
     public User() {}
     public User(String name, String email, String password, String phone, String role) {
         this.name = name;

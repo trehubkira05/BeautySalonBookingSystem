@@ -3,16 +3,19 @@ package com.beautysalon.booking.entity;
 import jakarta.persistence.*;
 import java.util.List;
 import java.util.UUID;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 @Entity
 @Table(name = "masters")
 public class Master {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @JdbcTypeCode(SqlTypes.CHAR) // <-- Фікс
     private UUID masterId;
 
     @ManyToOne
-    @JoinColumn(name = "user_id") // Зв'язок з об'єктом User (логін-дані)
+    @JoinColumn(name = "user_id") 
     private User user;
 
     private String specialization;
