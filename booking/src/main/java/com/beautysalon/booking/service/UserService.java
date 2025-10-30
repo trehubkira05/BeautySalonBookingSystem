@@ -1,10 +1,12 @@
 package com.beautysalon.booking.service;
 
+import com.beautysalon.booking.entity.Role;
 import com.beautysalon.booking.entity.User;
 import com.beautysalon.booking.repository.IUserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -15,35 +17,43 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    // --- Додаткова функціональність для UI ---
-    
-    /**
-     * Повертає список усіх користувачів з бази даних.
-     * Цей метод вирішує проблему компіляції.
-     */
-    public List<User> findAllUsers() {
-        // Метод findAll() успадкований від JpaRepository
-        return userRepository.findAll();
-    }
-
-    // --- Основні сценарії ---
-    
-    // Сценарій: Зареєструватися
-    public User registerClient(User user) {
-        if (userRepository.findByEmail(user.getEmail()) != null) {
-            throw new RuntimeException("Користувач з таким email вже існує.");
-        }
-        user.setRole("CLIENT"); 
+    // Зберігає нового користувача
+    public User save(User user) {
+        user.setRole(Role.CLIENT);
         return userRepository.save(user);
     }
 
-    // Сценарій: Авторизуватися
-    public User loginUser(String email, String password) {
-        User user = userRepository.findByEmail(email);
-        
-        if (user != null && user.getPassword().equals(password)) {
-            return user;
+    // Шукає користувача за email
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email); // ✅ ПРАВИЛЬНО!
+    }
+
+    // Всіх користувачів
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
+    // Логін (тимчасово)
+    public User login(String email, String password) {
+        return findByEmail(email)
+                .filter(user -> user.getPassword().equals(password))
+                .orElse(null);
+    }
+
+    // Додаткові методи
+    public Optional<User> findById(String id) {
+        try {
+            return userRepository.findById(java.util.UUID.fromString(id));
+        } catch (IllegalArgumentException e) {
+            return Optional.empty();
         }
-        return null; 
+    }
+
+    public void deleteById(String id) {
+        try {
+            userRepository.deleteById(java.util.UUID.fromString(id));
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
     }
 }

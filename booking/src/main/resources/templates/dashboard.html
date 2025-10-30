@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Ласкаво просимо | Beauty Salon</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f9f7f5;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .welcome-card {
+            background: white;
+            max-width: 500px;
+            width: 100%;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.7s ease-out;
+            text-align: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .salon-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-bottom: 4px solid #d4a373;
+        }
+
+        .content {
+            padding: 35px 30px;
+        }
+
+        .content h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            color: #4a3f35;
+            margin-bottom: 12px;
+        }
+
+        .content p {
+            color: #6b5e4e;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .user-greeting {
+            background: #fff8f0;
+            padding: 14px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-weight: 500;
+            color: #8b6f47;
+            font-size: 1.05rem;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: #a08a78;
+        }
+    </style>
+</head>
+<body>
+
+<div class="welcome-card">
+    <!-- Твоє фото салону -->
+    <img src="https://www.emerce.nl/content/uploads/2019/08/beauty-Shutter.jpg" 
+         alt="Наш салон краси" class="salon-image" />
+
+    <div class="content">
+        <h1>Ласкаво просимо!</h1>
+        <p>Ви у найкращому салоні краси міста. Тут дбають про вашу красу та комфорт.</p>
+
+        <!-- Привітання з ім’ям -->
+        <div class="user-greeting">
+            Вітаємо, <span th:text="${loggedInUser?.name} ?: 'Гість'">Гість</span>!
+        </div>
+
+        <div class="footer">
+            Ми завжди раді вас бачити
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
